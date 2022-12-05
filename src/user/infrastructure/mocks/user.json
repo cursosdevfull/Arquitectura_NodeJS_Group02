@@ -1,0 +1,20 @@
+[
+  {
+    "id": "87250f5d-4237-4bbf-8d7b-de74b438b9c5",
+    "name": "Carmela Soto",
+    "email": "carmela.soto@correo.com",
+    "username": "carmela.soto"
+  },
+  {
+    "id": "9fee7a04-1d0b-4636-a62f-66a09728dbe0",
+    "name": "Rosa Maldonado",
+    "email": "rosa.maldonado@correo.com",
+    "username": "rosa.maldonado"
+  },
+  {
+    "id": "716b8bfa-eecd-4a3d-9261-c10e5b12ec58",
+    "name": "Carolina Gonzales",
+    "email": "carolina.gonzales@correo.com",
+    "username": "carolina.gonzales"
+  }
+]
