@@ -1,20 +1,24 @@
 import { Controller, Post } from '@nestjs/common';
-import { HttpException } from '@nestjs/common/exceptions';
-import { v4 as uuidv4 } from 'uuid';
+import { CommandBus } from '@nestjs/cqrs';
 
-import { CourseApplication } from '../application/course.application';
-import { CourseProperties } from '../domain/aggregates/course';
-import { CourseFactory } from '../domain/aggregates/couse.factory';
-import { Goal, Requeriment, Syllabus } from '../domain/entities';
-import { IdVO } from '../domain/value-objects/id.vo';
+import { CourseCommand } from '../application/commands/course.command';
 
 @Controller('course')
 export class CourseController {
-  constructor(private readonly courseApplication: CourseApplication) {}
+  //constructor(private readonly courseApplication: CourseApplication) {}
+  constructor(private readonly commandBus: CommandBus) {}
 
   @Post()
   async create() {
-    const properties: CourseProperties = {
+    const courseCommand = new CourseCommand('NodeJS Profesional v19', [
+      'Aprender a usar Pulumi para crear infraestructura como código',
+      'Desplegar contínuamente con Pulumi',
+      'Desarrollar infraestructura usando Programa Orientada a Objetos usando Typescript',
+    ]);
+
+    this.commandBus.execute(courseCommand);
+
+    /*  const properties: CourseProperties = {
       id: IdVO.create(uuidv4()),
       name: 'Infraestructura como código con Pulumi',
       goals: [
@@ -51,8 +55,8 @@ export class CourseController {
         courseCreateResult.error.message,
         courseCreateResult.error.name,
       ); */
-    }
+    //}
 
-    return await this.courseApplication.insert(courseCreateResult.value);
+    //return await this.courseApplication.insert(courseCreateResult.value); */
   }
 }
