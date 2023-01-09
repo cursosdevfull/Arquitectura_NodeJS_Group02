@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CourseController } from './modules/course/interfaces/course.controller';
+import { CourseModule } from './modules/course/course.module';
 
-const controllers = [AppController, CourseController];
-
+const controllers = [AppController];
+const imports = [CourseModule];
 @Module({
-  imports: [],
+  imports: [...imports],
   controllers: [...controllers],
   providers: [AppService],
 })
