@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "target": "es2020",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strict": false,
+    "baseUrl": "./",
+    "outDir": "./cache"
+  },
+  "exclude": ["node_modules", "cache", "dist"],
+  "include": ["src/**/*"]
+}
