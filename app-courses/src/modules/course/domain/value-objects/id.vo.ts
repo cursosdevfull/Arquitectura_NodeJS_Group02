@@ -1,6 +1,9 @@
+import { Result } from 'neverthrow';
 import { validate } from 'uuid';
 
 import { BaseVO } from '../../../../core/domain/value-objects/base';
+
+export type IdVOResult = Result<IdVO, Error>;
 
 export class IdVO extends BaseVO<string> {
   private constructor(value: string) {

@@ -1,6 +1,6 @@
-import { DomainException } from './domain';
+import { BaseException } from '../../../../core/exceptions/base';
 
-export class NameEmptyException extends DomainException {
+export class NameEmptyException extends BaseException {
   status = 411;
 
   constructor() {
@@ -12,7 +12,7 @@ export class NameEmptyException extends DomainException {
   }
 }
 
-export class NameLengthException extends DomainException {
+export class NameLengthException extends BaseException {
   status = 411;
 
   constructor(message: number) {
@@ -24,7 +24,7 @@ export class NameLengthException extends DomainException {
   }
 }
 
-export class NameInvalidWordsException extends DomainException {
+export class NameInvalidWordsException extends BaseException {
   status = 411;
 
   constructor(message: number) {

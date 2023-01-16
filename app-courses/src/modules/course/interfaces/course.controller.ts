@@ -1,22 +1,36 @@
-import { Controller, Post } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { CourseCommand } from '../application/commands/course.command';
+import { CourseFindAllQuery } from '../application/queries/course-find-all.query';
+import { CourseInsertDto } from './dtos/course-insert.dto';
 
 @Controller('course')
 export class CourseController {
   //constructor(private readonly courseApplication: CourseApplication) {}
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   @Post()
-  async create() {
-    const courseCommand = new CourseCommand('NodeJS Profesional v19', [
+  async create(@Body() body: CourseInsertDto) {
+    const courseCommand = new CourseCommand(
+      body.name,
+      body.goals,
+      body.requeriments,
+      body.syllabus,
+    );
+
+    /* const courseCommand = new CourseCommand('NodeJS Profesional v19', [
       'Aprender a usar Pulumi para crear infraestructura como código',
       'Desplegar contínuamente con Pulumi',
       'Desarrollar infraestructura usando Programa Orientada a Objetos usando Typescript',
-    ]);
+    ]); */
 
-    this.commandBus.execute(courseCommand);
+    const courseInserted = await this.commandBus.execute(courseCommand);
+
+    return courseInserted;
 
     /*  const properties: CourseProperties = {
       id: IdVO.create(uuidv4()),
@@ -58,5 +72,13 @@ export class CourseController {
     //}
 
     //return await this.courseApplication.insert(courseCreateResult.value); */
+  }
+
+  @Get()
+  async findAll() {
+    const courseQuery = new CourseFindAllQuery();
+    const courses = await this.queryBus.execute(courseQuery);
+
+    return courses;
   }
 }

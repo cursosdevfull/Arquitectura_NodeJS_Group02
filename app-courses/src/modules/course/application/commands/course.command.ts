@@ -1,9 +1,10 @@
+import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { Inject } from '@nestjs/common/decorators';
 import { CommandHandler, ICommand, ICommandHandler } from '@nestjs/cqrs';
 import { v4 as uuidv4 } from 'uuid';
 
 import { CourseProperties } from '../../domain/aggregates/course';
-import { CourseFactory } from '../../domain/aggregates/couse.factory';
+import { CourseFactory } from '../../domain/aggregates/course.factory';
 import { Goal } from '../../domain/entities';
 import { CourseRepository } from '../../domain/repositories/course.repository';
 import { IdVO } from '../../domain/value-objects/id.vo';
@@ -35,12 +36,17 @@ export class CourseCommandHandler implements ICommandHandler<CourseCommand> {
     const courseResult = CourseFactory.create(properties);
 
     if (courseResult.isErr()) {
-      throw new Error(courseResult.error.message);
+      throw new BadRequestException(courseResult.error.message);
     }
 
-    const result = await this.courseRepository.insert(courseResult.value);
-    console.log('result', result);
+    const courseInsertResult = await this.courseRepository.insert(
+      courseResult.value,
+    );
 
-    return result;
+    if (courseInsertResult.isErr()) {
+      throw new InternalServerErrorException(courseInsertResult.error.message);
+    }
+
+    return courseInsertResult.value;
   }
 }

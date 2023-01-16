@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { Course } from '../domain/aggregates/course';
 import { CourseRepository } from '../domain/repositories/course.repository';
 import { CourseInfrastructure } from '../infrastructure/course.infrastructure';
 
@@ -11,7 +10,7 @@ export class CourseApplication {
     private readonly courseRepository: CourseRepository,
   ) {}
 
-  insert(course: Course): Promise<Course> {
+  /*   insert(course: Course): Promise<Course> {
     return this.courseRepository.insert(course);
-  }
+  } */
 }

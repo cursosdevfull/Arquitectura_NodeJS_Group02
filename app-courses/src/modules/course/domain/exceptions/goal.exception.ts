@@ -1,6 +1,6 @@
-import { DomainException } from './domain';
+import { BaseException } from '../../../../core/exceptions/base';
 
-export class GoalInvalidQuantityItemsException extends DomainException {
+export class GoalInvalidQuantityItemsException extends BaseException {
   status = 411;
 
   constructor(message: number) {
@@ -12,7 +12,7 @@ export class GoalInvalidQuantityItemsException extends DomainException {
   }
 }
 
-export class GoalEmptyDescriptionException extends DomainException {
+export class GoalEmptyDescriptionException extends BaseException {
   status = 411;
 
   constructor() {

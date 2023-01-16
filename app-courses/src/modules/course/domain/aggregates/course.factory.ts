@@ -1,16 +1,16 @@
 import { err, ok, Result } from 'neverthrow';
 
-import { DomainException } from '../exceptions/domain';
+import { BaseException } from '../../../../core/exceptions/base';
 import { GoalEmptyDescriptionException, GoalInvalidQuantityItemsException } from '../exceptions/goal.exception';
 import { NameEmptyException, NameInvalidWordsException, NameLengthException } from '../exceptions/name.exception';
 import {
-  RequerimentEmptyDescriptionException,
-  RequerimentInvalidQuantityItemsException,
+    RequerimentEmptyDescriptionException,
+    RequerimentInvalidQuantityItemsException,
 } from '../exceptions/requeriment.exception';
 import { SyllabusEmptyDescriptionException, SyllabusInvalidQuantityItemsException } from '../exceptions/syllabus.exception';
 import { Course, CourseProperties } from './course';
 
-export type CourseCreateResult = Result<Course, DomainException>;
+export type CourseCreateResult = Result<Course, BaseException>;
 
 export class CourseFactory {
   static create(properties: CourseProperties): CourseCreateResult {
