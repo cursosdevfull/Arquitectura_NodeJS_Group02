@@ -1,5 +1,5 @@
 # Stage 1 - the build process
-FROM node:16.15.0-alpine as BUILD
+FROM public.ecr.aws/b7h8q0t5/nodejs16 as BUILD
 
 WORKDIR /build
 
@@ -12,7 +12,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2 - the production environment
-FROM node:16.15.0-alpine
+FROM public.ecr.aws/b7h8q0t5/nodejs16
 
 WORKDIR /app
 
