@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: arq-mysql
+    ports:
+      - '3310:3306'
+    environment:
+      MYSQL_USER: user-cursosdev
+      MYSQL_PASSWORD: 123
+      MYSQL_DATABASE: cursosdev
+      MYSQL_ROOT_PASSWORD: 123
+    volumes:
+      - vol-arq-mysql:/var/lib/mysql
+    networks:
+      - arq-net
+
+  app:
+    build: .
+    container_name: arq-app
+    ports:
+      - '5100:80'
+    networks:
+      - arq-net
+
+volumes:
+  vol-arq-mysql:
+
+networks:
+  arq-net:
