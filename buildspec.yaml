@@ -11,6 +11,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      - aws s3 cp s3://cursoddd/dev/.env .env
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
