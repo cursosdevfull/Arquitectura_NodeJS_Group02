@@ -8,10 +8,11 @@ phases:
       - aws ecr get-login-password | docker login --username AWS --password-stdin ${REPOSITORY_URI}
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=lastest}
+      - ENVIRONMENT=$(echo $environment)
   build:
     commands:
       - echo Build started on `date`
-      - aws s3 cp s3://cursoddd/dev/.env .env
+      - aws s3 cp s3://cursoddd/$ENVIRONMENT/.env .env
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
