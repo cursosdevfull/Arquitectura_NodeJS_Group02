@@ -1,6 +1,12 @@
+import { DomainEvents } from '../events/DomainEvents';
+import { UserCreated } from '../events/UserCreated';
+
 export class Log {
-  showMessage(evt: any, action: string) {
+  constructor() {
+    DomainEvents.register(this.showMessage, UserCreated.name);
+  }
+
+  showMessage(evt: any) {
     console.log("Log", evt);
-    console.log("Action", action);
   }
 }

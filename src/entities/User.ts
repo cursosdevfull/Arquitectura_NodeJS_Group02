@@ -18,7 +18,7 @@ export class User extends AggregateRoot<UserProperties> {
   private lastname: string;
   private active: boolean;
 
-  private constructor(properties: UserProperties, id?: string) {
+  private constructor(properties: UserProperties) {
     super();
     Object.assign(this, properties);
     this.active = true;
@@ -30,6 +30,6 @@ export class User extends AggregateRoot<UserProperties> {
   }
 
   static create(properties: UserProperties, id?: string): User {
-    return new User(properties, id);
+    return new User(properties);
   }
 }
