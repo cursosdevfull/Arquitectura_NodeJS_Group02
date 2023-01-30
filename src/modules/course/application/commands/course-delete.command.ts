@@ -1,5 +1,5 @@
 import { BadRequestException, Inject, InternalServerErrorException } from '@nestjs/common';
-import { CommandHandler, ICommand, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventPublisher, ICommand, ICommandHandler } from '@nestjs/cqrs';
 
 import { CourseRepository } from '../../domain/repositories/course.repository';
 import { CourseInfrastructure } from '../../infrastructure/course.infrastructure';
@@ -15,6 +15,7 @@ export class CourseDeleteCommandHandler
   constructor(
     @Inject(CourseInfrastructure)
     private readonly courseRepository: CourseRepository,
+    @Inject(EventPublisher) private readonly eventPublisher: EventPublisher,
   ) {}
 
   async execute(command: CourseDeleteCommand): Promise<any> {
@@ -25,7 +26,10 @@ export class CourseDeleteCommandHandler
     }
 
     const course = courseResult.value;
+
+    this.eventPublisher.mergeObjectContext(course);
     course.delete();
+    course.commit();
 
     const courseDeleteResult = await this.courseRepository.save(
       courseResult.value,

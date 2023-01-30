@@ -1,11 +1,14 @@
+import { Inject } from '@nestjs/common';
+import { EventPublisher } from '@nestjs/cqrs';
 import { err, ok, Result } from 'neverthrow';
 
 import { BaseException } from '../../../../core/exceptions/base';
+import { CourseCreated } from '../events/CourseCreated';
 import { GoalEmptyDescriptionException, GoalInvalidQuantityItemsException } from '../exceptions/goal.exception';
 import { NameEmptyException, NameInvalidWordsException, NameLengthException } from '../exceptions/name.exception';
 import {
-    RequerimentEmptyDescriptionException,
-    RequerimentInvalidQuantityItemsException,
+  RequerimentEmptyDescriptionException,
+  RequerimentInvalidQuantityItemsException,
 } from '../exceptions/requeriment.exception';
 import { SyllabusEmptyDescriptionException, SyllabusInvalidQuantityItemsException } from '../exceptions/syllabus.exception';
 import { Course, CourseProperties } from './course';
@@ -13,7 +16,10 @@ import { Course, CourseProperties } from './course';
 export type CourseCreateResult = Result<Course, BaseException>;
 
 export class CourseFactory {
-  static create(properties: CourseProperties): CourseCreateResult {
+  constructor(
+    @Inject(EventPublisher) private readonly eventPublisher: EventPublisher,
+  ) {}
+  create(properties: CourseProperties): CourseCreateResult {
     if (properties.goals && properties.goals.length < 3) {
       return err(
         new GoalInvalidQuantityItemsException(properties.goals.length),
@@ -68,6 +74,16 @@ export class CourseFactory {
       );
     }
 
-    return ok(new Course(properties));
+    const course = new Course(properties);
+
+    this.eventPublisher.mergeObjectContext(course);
+
+    const values = {
+      ...course.properties(),
+      id: course.properties().id.getValue(),
+    };
+    course.apply(Object.assign(new CourseCreated(), values));
+
+    return ok(course);
   }
 }

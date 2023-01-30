@@ -31,7 +31,7 @@ export class AppService {
   }
 
   get ConnectionParamters(): IDatabase {
-    const logging = true;
+    const logging = false;
     const synchronize = true; //process.env.NODE_ENV !== 'production' ? true : false;
     return {
       host: process.env.DB_HOST,

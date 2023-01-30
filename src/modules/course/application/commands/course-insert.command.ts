@@ -26,12 +26,13 @@ export class CourseInsertCommandHandler
   constructor(
     @Inject(CourseInfrastructure)
     private readonly courseRepository: CourseRepository,
+    private readonly courseFactory: CourseFactory,
   ) {}
 
   async execute(command: CourseInsertCommand): Promise<any> {
     const idVOResult = IdVO.create(uuidv4());
 
-    if(idVOResult.isErr()) {
+    if (idVOResult.isErr()) {
       throw new BadRequestException(idVOResult.error.message);
     }
 
@@ -41,7 +42,7 @@ export class CourseInsertCommandHandler
       goals: command.goals.map((goal) => new Goal(goal)),
     };
 
-    const courseResult = CourseFactory.create(properties);
+    const courseResult = this.courseFactory.create(properties);
 
     if (courseResult.isErr()) {
       throw new BadRequestException(courseResult.error.message);
@@ -54,6 +55,8 @@ export class CourseInsertCommandHandler
     if (courseInsertResult.isErr()) {
       throw new InternalServerErrorException(courseInsertResult.error.message);
     }
+
+    courseResult.value.commit();
 
     return courseInsertResult.value;
   }

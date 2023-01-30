@@ -1,4 +1,7 @@
+import { AggregateRoot } from '@nestjs/cqrs';
+
 import { Goal, Requeriment, Syllabus } from '../entities';
+import { CourseDeleted } from '../events/CourseDeleted';
 import { IdVO } from '../value-objects/id.vo';
 
 export interface CourseEssentials {
@@ -25,7 +28,7 @@ export type CourseUpdate = Partial<{
   readonly syllabus: Syllabus[];
 }>;
 
-export class Course {
+export class Course extends AggregateRoot {
   private readonly id: IdVO;
   private name: string;
   private active: boolean;
@@ -37,6 +40,7 @@ export class Course {
   private deletedAt: Date | null;
 
   constructor(properties: CourseProperties) {
+    super();
     Object.assign(this, properties);
     this.active = true;
     this.createdAt = new Date();
@@ -64,5 +68,11 @@ export class Course {
   delete(): void {
     this.active = false;
     this.deletedAt = new Date();
+
+    const values = {
+      ...this.properties(),
+      id: this.properties().id.getValue(),
+    };
+    this.apply(Object.assign(new CourseDeleted(), values));
   }
 }
