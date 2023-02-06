@@ -16,6 +16,29 @@ services:
     networks:
       - arq-net
 
+  redis-server:
+    image: redis:6.0.5-alpine
+    container_name: redis-server2
+    command: redis-server
+    ports:
+      - '6390:6379'
+    restart: always
+    networks:
+      - arq-net
+
+  redis-client:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-client2
+    ports:
+      - '8090:8081'
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis-server2:6379
+    depends_on:
+      - redis-server
+    networks:
+      - arq-net
+
   app:
     build: .
     container_name: arq-app

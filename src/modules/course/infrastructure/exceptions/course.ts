@@ -1,4 +1,4 @@
-import { BaseException } from 'src/core/exceptions/base';
+import { BaseException } from '../../../../core/exceptions/base';
 
 export class CourseDatabaseException extends BaseException {
   status = 500;

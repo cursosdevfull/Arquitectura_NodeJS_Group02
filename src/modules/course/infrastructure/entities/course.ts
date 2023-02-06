@@ -1,6 +1,6 @@
-import { BaseEntity } from 'src/core/infrastructure/entities/base';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
+import { BaseEntity } from '../../../../core/infrastructure/entities/base';
 import { GoalEntity } from './goal';
 import { RequerimentEntity } from './requeriment';
 import { SyllabusEntity } from './syllabus';
